@@ -47,10 +47,15 @@ class Board
           if new_neigh_col.between?(0, @board_size-1) && new_neigh_row.between?(0, @board_size-1)
             tile.neighbors << @board[new_neigh_row][new_neigh_col]
           end
+
+          tile.neighbor_bomb_count
         end
       end
     end
   end
+
+
+
 
   def render
     print "  0 1 2 3 4 5 6 7 8\n"

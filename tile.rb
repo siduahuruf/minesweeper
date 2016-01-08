@@ -9,7 +9,6 @@ class Tile
     @value = assigned_value
     @position = pos
     @neighbors = []
-    neighbor_bomb_count
   end
 
   def reveal
@@ -33,4 +32,7 @@ class Tile
     @value = bomb_counter
   end
 
+  def inspect
+    {"Value" => @value, "Position" => @position}.inspect
+  end
 end

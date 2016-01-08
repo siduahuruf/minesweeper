@@ -42,6 +42,8 @@ class Game
       get_guess
       receive_guess
     end
+    puts "You Lose!" if @board[@move_position].value == :bomb
+    @board.render
   end
 
 
