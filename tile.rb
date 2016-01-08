@@ -2,7 +2,7 @@ require './board.rb'
 
 class Tile
 
-  attr_reader :value, :neighbors
+  attr_reader :value, :neighbors, :position
 
   def initialize(pos, assigned_value = nil)
     @status = :hidden
