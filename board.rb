@@ -1,6 +1,7 @@
 require "./tile.rb"
 
 class Board
+  attr_reader :board, :bomb_locations
 
   def initialize(board_size = 9)
     @board_size = board_size
@@ -13,6 +14,7 @@ class Board
     assign_bombs
     build_board
     assign_neighbors
+    render
   end
 
   def build_board
@@ -43,7 +45,6 @@ class Board
           new_neigh_col = col_index + direction[1]
 
           if new_neigh_col.between?(0, @board_size-1) && new_neigh_row.between?(0, @board_size-1)
-            p "new_n_row #{new_neigh_row}, new_n_col #{new_neigh_col}, tile #{[row_index,col_index]}"
             tile.neighbors << @board[new_neigh_row][new_neigh_col]
           end
         end
@@ -51,4 +52,30 @@ class Board
     end
   end
 
+  def render
+    print "  0 1 2 3 4 5 6 7 8\n"
+    @board.each_with_index do |row, row_index|
+      print "#{row_index} "
+      row.each do |tile|
+        if tile.status == :hidden
+          print "* "
+        elsif tile.status == :flagged
+          print "F "
+        elsif tile.value == :bomb
+          print "B "
+        else
+          if tile.value.nil?
+            print "_ "
+          else
+            print "#{tile.value} "
+          end
+        end
+      end
+      print "\n"
+    end
+  end
+
+  def [](pos)
+    @board[pos[0]][pos[1]]
+  end
 end

@@ -2,17 +2,22 @@ require './board.rb'
 
 class Tile
 
-  attr_reader :value, :neighbors, :position
+  attr_reader :value, :neighbors, :position, :status
 
   def initialize(pos, assigned_value = nil)
     @status = :hidden
     @value = assigned_value
     @position = pos
     @neighbors = []
+    neighbor_bomb_count
   end
 
   def reveal
-    @status = :revealed
+    if @value == :bomb
+      @status = :bombed
+    else
+      @status = :revealed
+    end
     @value
   end
 
@@ -26,10 +31,6 @@ class Tile
       end
     end
     @value = bomb_counter
-  end
-
-  def bombed?
-    @value == :bomb
   end
 
 end
