@@ -1,4 +1,5 @@
 require "./tile.rb"
+require 'yaml'
 
 class Board
   attr_reader :board, :bomb_locations, :remaining_tiles
@@ -46,7 +47,8 @@ class Board
           new_neigh_col = col_index + direction[1]
 
           if new_neigh_col.between?(0, @board_size-1) && new_neigh_row.between?(0, @board_size-1)
-            tile.neighbors << @board[new_neigh_row][new_neigh_col]
+            # tile.neighbors << @board[new_neigh_row][new_neigh_col]
+            tile.neighbors << self[new_neigh_row, new_neigh_col]
           end
 
           tile.neighbor_bomb_count
@@ -66,6 +68,7 @@ class Board
     @board.each_with_index do |row, row_index|
       print "#{row_index} "
       row.each do |tile|
+        # print tile.to_s
         if tile.status == :hidden
           print "* "
         elsif tile.status == :flagged
@@ -89,4 +92,14 @@ class Board
   def [](pos)
     @board[pos[0]][pos[1]]
   end
+
+  def export_game_file(filename)
+    File.open("#{filename}.yml","w"){|file| file.write(@board.to_yaml)}
+  end
+
+  def load_game_file(filename)
+    file = File.read("#{filename}.yml")
+    @board = YAML::load(file)
+  end
+
 end
