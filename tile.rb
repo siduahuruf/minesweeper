@@ -2,7 +2,8 @@ require './board.rb'
 
 class Tile
 
-  attr_reader :value, :neighbors, :position, :status
+  attr_reader :value, :neighbors, :position
+  attr_accessor :status
 
   def initialize(pos, assigned_value = nil)
     @status = :hidden
@@ -12,10 +13,12 @@ class Tile
   end
 
   def reveal
+    return @value if @status == :revealed
     if @value == :bomb
       @status = :bombed
     else
       @status = :revealed
+      @neighbors.each {|neighbor| neighbor.reveal} if @value == 0
     end
     @value
   end

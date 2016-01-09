@@ -7,12 +7,19 @@ class Game
 
   def initialize(board_size = 9)
     @board = Board.new(board_size)
+
+    play
   end
 
   def get_guess
-    puts "Make your next move! Indicate 'F' (for Flag) or 'R' (for Reveal) and Guess location x,y!"
-    puts "Example : R 1,2"
-    move = gets.chomp.split(" ")
+    answer_valid = false
+    until answer_valid
+      puts "Make your next move! Indicate 'F' (for Flag) or 'R' (for Reveal) and Guess location x,y!"
+      puts "Example : R 1,2"
+      move = gets.chomp
+      answer_valid = true if move.length == 5 && (move[0] == "R" || move[0] == "F")
+    end
+    move = move.split(" ")
     @move_action = move[0]
     @move_position = move[1].split(",").map(&:to_i)
   end
@@ -28,6 +35,11 @@ class Game
 
 
   def game_over?
+    return true if loss? || @board.win?
+
+  end
+
+  def loss?
     @move_action == "R" && @board[@move_position].value == :bomb
   end
 
@@ -41,8 +53,10 @@ class Game
       @board.render
       get_guess
       receive_guess
+      system("clear")
     end
-    puts "You Lose!" if @board[@move_position].value == :bomb
+    puts "You Lose!" if loss?
+    puts "You win!" if @board.win?
     @board.render
   end
 

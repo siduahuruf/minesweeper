@@ -1,12 +1,13 @@
 require "./tile.rb"
 
 class Board
-  attr_reader :board, :bomb_locations
+  attr_reader :board, :bomb_locations, :remaining_tiles
 
   def initialize(board_size = 9)
     @board_size = board_size
     @board = Array.new(board_size) {Array.new(board_size)}
     @num_bombs = 5
+
     setup
   end
 
@@ -54,10 +55,13 @@ class Board
     end
   end
 
-
+  def win?
+    @remaining_tiles == @num_bombs
+  end
 
 
   def render
+    @remaining_tiles = @board_size ** 2
     print "  0 1 2 3 4 5 6 7 8\n"
     @board.each_with_index do |row, row_index|
       print "#{row_index} "
@@ -69,10 +73,12 @@ class Board
         elsif tile.value == :bomb
           print "B "
         else
-          if tile.value.nil?
+          if tile.value == 0
             print "_ "
+            @remaining_tiles -= 1
           else
             print "#{tile.value} "
+            @remaining_tiles -= 1
           end
         end
       end
