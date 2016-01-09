@@ -50,7 +50,6 @@ class Game
 
   def game_over?
     return true if loss? || @board.win?
-
   end
 
   def loss?
@@ -81,4 +80,10 @@ class Game
     @board.load_game_file(filename)
   end
 
+end
+
+
+
+if $PROGRAM_NAME == __FILE__
+  g = Game.new
 end

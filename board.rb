@@ -47,8 +47,7 @@ class Board
           new_neigh_col = col_index + direction[1]
 
           if new_neigh_col.between?(0, @board_size-1) && new_neigh_row.between?(0, @board_size-1)
-            # tile.neighbors << @board[new_neigh_row][new_neigh_col]
-            tile.neighbors << self[new_neigh_row, new_neigh_col]
+            tile.neighbors << @board[new_neigh_row][new_neigh_col]
           end
 
           tile.neighbor_bomb_count
